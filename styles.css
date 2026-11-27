@@ -142,3 +142,10 @@ a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .code { margin: 0; padding: 14px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.76rem; line-height: 1.6; color: var(--fg); }
 .code .mask { background: var(--todo-soft); color: var(--todo); border-radius: 3px; padding: 0 4px; }
 .code .c { color: var(--muted); }
+
+/* 한국어 줄바꿈: 단어 중간(예: "운/영비")에서 끊기지 않게 어절 단위로 줄바꿈 */
+body { word-break: keep-all; overflow-wrap: break-word; }
+
+/* 상세 페이지: 카드형 2단 대신 메타를 위에 한 줄로 두고 본문을 전체 폭으로 */
+.case-page .case { grid-template-columns: 1fr; gap: 16px; }
+.case-page .case-meta { grid-auto-flow: column; justify-content: start; gap: 4px 14px; display: flex; flex-wrap: wrap; }
