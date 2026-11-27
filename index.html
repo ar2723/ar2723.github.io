@@ -8,13 +8,38 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261127b">
+<link rel="stylesheet" href="styles.css?v=20261127c">
 </head>
-<body>
+<body id="top">
+<div class="layout">
+<nav class="side" aria-label="페이지 목차">
+  <a class="side-name" href="#top">정세영</a>
+  <ul class="side-top">
+    <li><a href="#profile">약력</a></li>
+    <li><a href="#career">경력</a></li>
+    <li><a href="#cases">주요 경험</a></li>
+  </ul>
+  <ul class="side-cases">
+    <li><a class="side-group" href="#g-mildang">밀당PT</a>
+      <ul><li><a href="cases/mildang-coda.html">Coda로 개발에 관심을 갖게 된 계기</a></li></ul></li>
+    <li><a class="side-group" href="#g-ween">위엔 · 이제너두</a>
+      <ul>
+        <li><a href="cases/health-settlement.html">건강검진 정산 배치·선입금 로직</a></li>
+        <li><a href="cases/welfare-batch-column.html">컬럼 추가로 멈춘 자동신청 배치</a></li>
+        <li><a href="cases/welfare-holiday.html">임시공휴일 누락 환급 장애</a></li>
+        <li><a href="cases/welfare-batch-order.html">배치 순서 변경 이중 환급</a></li>
+        <li><a href="cases/kcp-pg-signature.html">KCP PG 전자서명 연동</a></li>
+      </ul></li>
+    <li><a class="side-group" href="#g-linus">라이너스</a>
+      <ul><li><a href="cases/linus-saml-sso.html">Canvas SAML SSO 연동</a></li></ul></li>
+    <li><a class="side-group" href="#g-personal">개인 프로젝트</a>
+      <ul><li><a href="cases/bookmate-refactoring.html">북메이트 리팩토링·운영</a></li></ul></li>
+  </ul>
+</nav>
 
 <div class="wrap">
 
-  <header>
+  <header id="profile">
     <span class="label">Backend Developer · Java / Spring</span>
     <h1>정세영</h1>
     <p class="role">Java/Spring 백엔드 개발자 · 3년차</p>
@@ -35,7 +60,7 @@
     </div>
   </header>
 
-  <section aria-labelledby="career">
+  <section id="career-sec" aria-labelledby="career">
     <h2 id="career">경력</h2>
     <div class="timeline">
       <div class="tl-row now">
@@ -66,11 +91,11 @@
     </div>
   </section>
 
-  <section aria-labelledby="cases">
-    <h2 id="cases">프로젝트와 장애 대응 사례</h2>
+  <section id="cases-sec" aria-labelledby="cases">
+    <h2 id="cases">주요 경험</h2>
     <div class="groups">
 
-      <div class="group">
+      <div class="group" id="g-mildang">
         <div class="group-head"><h3>밀당PT · 영어 교육</h3><span>2022.02 – 2023.02</span></div>
         <div class="cards">
           <a class="card" href="cases/mildang-coda.html">
@@ -82,7 +107,7 @@
         </div>
       </div>
 
-      <div class="group">
+      <div class="group" id="g-ween">
         <div class="group-head"><h3>위엔 · 이제너두 복지 플랫폼</h3><span>2023.11 – 2025.07</span></div>
         <div class="cards">
           <a class="card" href="cases/health-settlement.html">
@@ -118,7 +143,7 @@
         </div>
       </div>
 
-      <div class="group">
+      <div class="group" id="g-linus">
         <div class="group-head"><h3>라이너스 · 에듀테크 LMS</h3><span>2025.07 – 2025.09</span></div>
         <div class="cards">
           <a class="card" href="cases/linus-saml-sso.html">
@@ -130,7 +155,7 @@
         </div>
       </div>
 
-      <div class="group">
+      <div class="group" id="g-personal">
         <div class="group-head"><h3>개인 프로젝트</h3><span>2026 –</span></div>
         <div class="cards">
           <a class="card" href="cases/bookmate-refactoring.html">
@@ -157,5 +182,16 @@
   </section>
 
 </div>
+</div>
+<script>
+(() => {
+  const links = [...document.querySelectorAll(".side-top a")];
+  const map = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { links.forEach(a => a.removeAttribute("aria-current")); map.get(e.target.dataset.nav)?.setAttribute("aria-current", "true"); } });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  ["profile", "career", "cases"].forEach(id => { const el = document.getElementById(id); if (el) { const t = el.closest("section") || el; t.dataset.nav = id; io.observe(t); } });
+})();
+</script>
 </body>
 </html>

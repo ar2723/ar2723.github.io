@@ -217,3 +217,38 @@ ol.rules small { display: block; color: var(--muted); font-size: 0.85rem; }
   a.card { transition: none; }
   a.card:active { transform: none; }
 }
+
+/* ── 홈 목차(사이드바) ─────────────────────
+   1100px 이상: 왼쪽에 고정 사이드바(약력·경력·주요 경험 + 회사별 사례 목록)
+   그보다 좁은 화면: 위쪽에 붙는 메뉴 한 줄(약력·경력·주요 경험)만 */
+.side {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  max-width: 880px; margin: 0 auto 28px;
+  padding-block: 10px; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.side ul { list-style: none; margin: 0; padding: 0; }
+.side a { color: var(--muted); text-decoration: none; }
+.side a:hover, .side a[aria-current="true"] { color: var(--accent); }
+.side-name, .side-cases { display: none; }
+.side-top { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.side-top a { display: inline-flex; align-items: center; min-height: 36px; font-size: 0.92rem; font-weight: 600; }
+.side-top a[aria-current="true"] { box-shadow: inset 0 -2px 0 var(--accent); }
+[id] { scroll-margin-top: 72px; }
+
+@media (min-width: 1100px) {
+  .layout { display: grid; grid-template-columns: 220px minmax(0, 880px); gap: 56px; justify-content: center; align-items: start; }
+  .layout > .wrap { margin: 0; }
+  .side {
+    top: calc(32px + env(safe-area-inset-top, 0px)); margin: 0; padding: 0; background: none; border: 0;
+    max-height: calc(100vh - 64px); overflow-y: auto; display: grid; gap: 18px;
+  }
+  .side-name { display: block; font-size: 1.2rem; font-weight: 700; color: var(--fg); }
+  .side-top { display: grid; gap: 2px; }
+  .side-top a { min-height: 32px; font-size: 0.95rem; }
+  .side-top a[aria-current="true"] { box-shadow: inset 2px 0 0 var(--accent); padding-left: 10px; }
+  .side-cases { display: grid; gap: 12px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .side-group { display: block; font-size: 0.82rem; font-weight: 600; color: var(--fg) !important; margin-bottom: 4px; }
+  .side-cases ul ul { display: grid; gap: 2px; padding-left: 10px; border-left: 1px solid var(--line); }
+  .side-cases ul ul a { display: block; padding: 3px 0; font-size: 0.82rem; line-height: 1.45; }
+  [id] { scroll-margin-top: 24px; }
+}
