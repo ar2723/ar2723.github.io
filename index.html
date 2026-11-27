@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Java/Spring 백엔드 개발자 정세영의 포트폴리오. 금융 정산·카드사 대외계 운영, SAML SSO 연동, 북메이트 리팩토링.">
+<title>정세영 개발 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+/* Layout: 한 줄기 단일 컬럼. 사례마다 왼쪽에 배치 로그 같은 메타, 오른쪽에 상황→원인→대응→남긴 것 */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5a6475;
+  --line: #dde2ea;
+  --accent: #1d5c8c;
+  --accent-soft: #e4eef7;
+  --todo: #9a5b00;
+  --todo-soft: #fbf0dc;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2b3340;
+    --accent: #7db4e0; --accent-soft: #1d2c3b; --todo: #e7b25c; --todo-soft: #2e2414;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2b3340;
+  --accent: #7db4e0; --accent-soft: #1d2c3b; --todo: #e7b25c; --todo-soft: #2e2414;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 48px 72px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 56px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.3; margin: 0; }
+h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+h3 { font-size: 1.12rem; font-weight: 600; }
+p { margin: 0; }
+.mono { font-family: var(--font-mono); font-size: 0.82rem; }
+.label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.todo {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--todo); background: var(--todo-soft); border-radius: 4px; padding: 1px 6px; margin-left: 4px;
+  vertical-align: 2px; white-space: nowrap;
+}
+
+/* 머리말 */
+header { display: grid; gap: 14px; }
+header .role { font-size: 1.05rem; color: var(--muted); }
+header .thesis { max-width: 62ch; font-size: 1.05rem; }
+.stack { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 0.78rem; border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; color: var(--fg); background: var(--surface); }
+
+/* 경력 */
+section { display: grid; gap: 20px; }
+.timeline { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.tl-row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.tl-row > * { min-width: 0; }
+.tl-when { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.tl-what strong { font-weight: 600; }
+.tl-what p { color: var(--muted); font-size: 0.95rem; }
+.tl-row.now .tl-when { color: var(--accent); }
+
+/* 사례 */
+.case { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.case > * { min-width: 0; }
+.case-meta { display: grid; gap: 6px; align-content: start; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.case-meta .tag { color: var(--accent); }
+.case-body { display: grid; gap: 16px; }
+.case-body > p.lead { color: var(--muted); }
+dl.steps { display: grid; grid-template-columns: 76px 1fr; gap: 10px 16px; margin: 0; }
+dl.steps dt { font-weight: 600; font-size: 0.9rem; color: var(--accent); padding-top: 1px; }
+dl.steps dd { margin: 0; min-width: 0; }
+dl.steps ul { margin: 0; padding-left: 1.1em; }
+dl.steps li + li { margin-top: 4px; }
+.numbers { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 12px 14px; background: var(--accent-soft); border-radius: 4px; }
+.numbers div { display: grid; }
+.numbers b { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.numbers span { font-size: 0.8rem; color: var(--muted); }
+code { font-family: var(--font-mono); font-size: 0.86em; background: var(--accent-soft); padding: 0 4px; border-radius: 3px; }
+
+/* 원칙 */
+ol.rules { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; max-width: 68ch; }
+ol.rules li::marker { font-family: var(--font-mono); color: var(--accent); }
+ol.rules small { display: block; color: var(--muted); font-size: 0.85rem; }
+
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  body { padding-block: 32px 56px; }
+  h1 { font-size: 1.7rem; }
+  .tl-row { grid-template-columns: 1fr; gap: 2px; }
+  .case { grid-template-columns: 1fr; padding: 20px; gap: 14px; }
+  .case-meta { grid-auto-flow: row; }
+  dl.steps { grid-template-columns: 1fr; gap: 2px; }
+  dl.steps dd { margin-bottom: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <span class="label">Backend Developer · Java / Spring</span>
+    <h1>정세영</h1>
+    <p class="role">돈이 오가는 운영 시스템을 다뤄 온 3년차 백엔드 개발자</p>
+    <p class="thesis">영어교육을 전공했고, 흩어진 일을 절차로 만드는 데서 보람을 느껴 개발로 옮겼습니다. 복지포인트 정산, 카드사 대외계 전문, PG·SSO 연동처럼 실수가 바로 금액 차이로 이어지는 시스템을 운영해 왔습니다. 장애가 나면 원인과 재발 방지책을 문서로 남깁니다.</p>
+    <div class="stack" aria-label="주요 기술">
+      <span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">MyBatis</span><span class="chip">Oracle</span><span class="chip">JSP · jQuery</span><span class="chip">Shell 배치 · cron</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">nginx</span>
+    </div>
+    <p class="mono" style="color:var(--muted)">정보처리기사 · SQLD</p>
+  </header>
+
+  <section aria-labelledby="career">
+    <h2 id="career">경력</h2>
+    <div class="timeline">
+      <div class="tl-row now">
+        <div class="tl-when">2026.04 – 2027.04</div>
+        <div class="tl-what"><strong>메트라이프생명</strong> · IT 계약직
+          <p>보험 고객 관리 파트. 개인정보 처리, 고객 발송 안내장 관리, 고객 민원 처리 시스템(VOC) 유지보수 (Java/Spring, JSP)</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">2025.07 – 2025.09</div>
+        <div class="tl-what"><strong>라이너스</strong> · 백엔드 개발
+          <p>학습 포털과 Canvas LMS·Panopto 간 SAML SSO 연동 개발, Spring AI 챗봇 레퍼런스 작성, NestJS API 개발 지원</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">2023.11 – 2025.07</div>
+        <div class="tl-what"><strong>위엔</strong> · 이제너두 복지 플랫폼 개발·운영
+          <p>건강검진 운영비 정산 배치, 복지카드 대외계(카드사 9곳 전문 송수신), KCP PG 연동, 백오피스 유지보수</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">2023</div>
+        <div class="tl-what"><strong>에이콘 아카데미</strong> · 웹 개발 부트캠프
+          <p>최우수 수료. 팀장으로 독서 모임 서비스 ‘북메이트’ 개발</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">2022.02 – 2023.02</div>
+        <div class="tl-what"><strong>밀당PT</strong> · 영어 교육
+          <p>Coda로 학생 학습·상담 이력 데이터를 구조화해 관리</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="cases">
+    <h2 id="cases">대표 사례</h2>
+
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">장애 대응</span>
+        <span>2024.10</span>
+        <span>복지카드 대외계</span>
+        <span>카드사 9곳 · 환급 전문</span>
+      </div>
+      <div class="case-body">
+        <h3>임시공휴일 하나로 9개 카드사 환급 전문이 잘못 나간 날</h3>
+        <p class="lead">휴일 테이블에 새 임시공휴일이 등록되지 않아, 모든 배치가 그날을 평일로 처리했습니다. 하필 매월 1일이라 환급 요청이 몰리는 날이었습니다.</p>
+        <dl class="steps">
+          <dt>상황</dt>
+          <dd>카드사는 휴일이라 전문을 처리하지 않았고, 우리 쪽은 환급 요청과 정산 데이터를 이미 만들었습니다. 매출 수신 기간과 환급 처리가 카드사마다 다르게 어긋났습니다.</dd>
+          <dt>대응</dt>
+          <dd><ul>
+            <li>카드사 9곳의 매출 소급 범위와 환급 처리 상태를 전수 조사했습니다.</li>
+            <li>카드사 담당자와 일정을 맞춰, 배치를 다시 돌리지 않고 전문 날짜와 내용을 직접 고쳐서 다시 보냈습니다.</li>
+            <li>환급 요청과 정산이 서로 연결되어 있어, 재전송 사이에 새로 승인된 건 때문에 정산 금액 차이가 생겼습니다. 이 부분은 데이터를 보정하고 운영팀에 사유를 설명했습니다.</li>
+          </ul></dd>
+          <dt>남긴 것</dt>
+          <dd>“환급이 잘못 나가면 전문을 다시 만들지 말고 고쳐서 보낸다, 다시 만들 때는 환급 현황을 보정하고 운영팀에 알린다”는 처리 지침을 문서로 남겼습니다.</dd>
+        </dl>
+        <div class="numbers">
+          <div><b>9곳</b><span>영향 카드사</span></div>
+          <div><b>5,600건+</b><span>다시 보낸 환급 건 (기록된 4곳 합계)</span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">장애 대응</span>
+        <span>2024.08</span>
+        <span>Oracle 프로시저</span>
+        <span>자동신청 배치</span>
+      </div>
+      <div class="case-body">
+        <h3>컬럼 하나 추가했더니 자동신청 배치가 5일간 멈춘 일</h3>
+        <p class="lead">기능 개발을 위해 비용신청 테이블에 <code>NOT NULL DEFAULT</code> 컬럼을 추가했습니다. 기존 로직에는 영향이 없을 거라고 판단했습니다.</p>
+        <dl class="steps">
+          <dt>원인</dt>
+          <dd>자동신청 프로시저가 컬럼 목록 없이 변수 전체를 INSERT 하고 있었습니다. 새 컬럼에는 DEFAULT 대신 NULL이 들어갔고, 제약 위반으로 배치가 5일간 실패했습니다.</dd>
+          <dt>대응</dt>
+          <dd><ul>
+            <li>5일치 매출을 수기로 자동신청 처리했습니다. 이 과정에서 수동 신청으로 설정한 고객 건까지 함께 신청되는 2차 문제가 생겼습니다.</li>
+            <li>승인 상태로 남은 건을 일괄 반려하려 했지만, 포인트 복구 프로시저는 화면에서 반려할 때만 실행되었습니다. 그래서 상태를 되돌린 뒤 화면 기능으로 반려해 포인트를 복구했습니다.</li>
+            <li>고객 화면과 포인트 사용 내역에서 해당 건이 보이지 않도록 연결 데이터를 보정했습니다. 그 전에 대상 시퀀스를 백업해 두어, 처리 중에 데이터가 바뀌었을 때도 대응할 수 있었습니다.</li>
+          </ul></dd>
+          <dt>남긴 것</dt>
+          <dd>INSERT는 컬럼을 명시한다. 스키마를 바꾸기 전에 그 테이블을 쓰는 프로시저를 먼저 찾는다. 보정 전에는 대상을 백업한다.</dd>
+        </dl>
+        <div class="numbers">
+          <div><b>5일</b><span>배치 중단</span></div>
+          <div><b>약 1,700건</b><span>잘못 신청된 건 (7개 고객사)</span></div>
+          <div><b>1,229건</b><span>일괄 반려·포인트 복구</span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">개발</span>
+        <span>2023.11 – 12</span>
+        <span>건강검진 정산</span>
+        <span>배치 알고리즘</span>
+      </div>
+      <div class="case-body">
+        <h3>건강검진 운영비 정산 자동화 배치와 선입금 차감 로직</h3>
+        <p class="lead">수작업으로 하던 운영비 청구 내역 생성을 배치로 자동화했습니다.</p>
+        <dl class="steps">
+          <dt>방법</dt>
+          <dd>알고리즘 구조도를 먼저 그리고 단계별로 개발·디버깅했습니다. 모듈 단위 테스트를 반복하고 변수명과 업무 흐름을 문서로 정리했습니다.</dd>
+          <dt>결과</dt>
+          <dd>오픈 후 오류가 거의 없었습니다. 선입금 차감 알고리즘은 설계부터 주도했습니다.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">연동</span>
+        <span>2025.07 – 09</span>
+        <span>SAML 2.0</span>
+        <span>Canvas LMS</span>
+      </div>
+      <div class="case-body">
+        <h3>학습 포털을 IdP로 만든 SAML SSO 연동 (Canvas · Panopto)</h3>
+        <p class="lead">포털에서 과제나 퀴즈 링크를 누르면 Canvas 로그인 화면으로 넘어가고, 로그인 후에는 홈 화면으로 가 버렸습니다. 기존 연동은 인증 절차 없이 연결만 되어 있었고, 팀에 SAML을 다뤄 본 사람이 없었습니다.</p>
+        <dl class="steps">
+          <dt>구현</dt>
+          <dd><ul>
+            <li>포털 서버를 IdP, Canvas를 SP로 두는 SP-initiated 흐름을 구성했습니다.</li>
+            <li>Canvas가 보낸 AuthnRequest를 검증·디코딩해 속성을 추출했습니다. 응답은 Thymeleaf XML 템플릿으로 만들고, Assertion에 전자서명을 넣었습니다.</li>
+            <li>서명된 응답을 Base64로 인코딩해 RelayState와 함께 자동 POST 폼으로 돌려주었습니다. 그래서 사용자가 누른 과제 상세 페이지로 바로 이동합니다.</li>
+            <li>인증서와 키는 OpenSSL로 만들고, Canvas에는 인증서 지문을 등록해 응답을 검증하게 했습니다.</li>
+          </ul></dd>
+          <dt>확장</dt>
+          <dd>같은 IdP를 두 번째 SP인 Panopto에도 연결했습니다. 로그인 화면을 건너뛰는 문제는 해결했고, 기존 인스턴스 계정이 연동되지 않고 새로 생성되는 제약은 원인과 운영 방안을 문서로 정리했습니다.</dd>
+          <dt>남긴 것</dt>
+          <dd>Confluence에 설정 항목별 의미, 요청·응답 XML 예시, 시퀀스 다이어그램을 남겨 개발자들과 리뷰했습니다. 미구현인 SSO 로그아웃은 토큰 무효화와 로그아웃 요청 연계, 두 가지 방안으로 제안했습니다.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">개인 프로젝트</span>
+        <span>2026</span>
+        <span>북메이트 리팩토링</span>
+        <span>미니PC 운영 배포</span>
+      </div>
+      <div class="case-body">
+        <h3>2023년 팀 프로젝트를 레거시로 보고 운영 가능한 수준까지 정비</h3>
+        <p class="lead">부트캠프에서 만든 북메이트를 실제 서비스처럼 단계별로 고치고 있습니다. 매 단계의 판단 근거는 문서로 남깁니다.</p>
+        <dl class="steps">
+          <dt>한 일</dt>
+          <dd><ul>
+            <li>Spring Security 도입: 기본 인증 필수, 상태 변경은 POST + CSRF, 레거시 세션과의 브리지</li>
+            <li>Flyway로 스키마 기준선을 잡고 변경을 마이그레이션으로만 관리</li>
+            <li>Testcontainers(Oracle) 통합 테스트와 레거시 동작을 고정하는 특성 테스트</li>
+            <li>미니PC(Ubuntu) + nginx + GitHub Actions로 master push 시 운영 배포, 배포 후 스모크 테스트</li>
+          </ul></dd>
+          <dt>왜</dt>
+          <dd>회사에서 다루는 레거시를 “어디부터, 어떤 순서로, 무엇을 지키며” 고칠지 직접 연습하기 위해서입니다. </dd>
+          <dt>링크</dt>
+          <dd>서비스 <a href="https://bookmate.p-e.kr">bookmate.p-e.kr</a> · 코드 <a href="https://github.com/ar2723/Bookmate">github.com/ar2723/Bookmate</a></dd>
+        </dl>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="rules">
+    <h2 id="rules">운영하며 정한 원칙</h2>
+    <ol class="rules">
+      <li>데이터를 고치기 전에 대상을 백업하고, 전·후 조회 결과를 요청 건에 증거로 남긴다.<small>개인정보 파기(약 240만 건) 때도 삭제 전·삭제·삭제 후 쿼리와 결과를 모두 첨부했습니다.</small></li>
+      <li>조건절을 쓰기 전에 컬럼 타입부터 확인한다.<small>날짜처럼 보이는 VARCHAR 컬럼에 TO_DATE를 걸었다가 지적받은 뒤로 생긴 습관입니다.</small></li>
+      <li>배치를 다시 돌리는 것보다 결과물을 고쳐 보내는 편이 안전할 때가 많다.</li>
+      <li>업무 프로세스를 다 이해하지 못했으면 운영팀의 수기 처리를 먼저 멈추게 한다.</li>
+      <li>배운 것은 그날 문서로 남긴다. 업무별 매뉴얼과 일일 기록이 다음 사람의 인수인계 자료가 된다.</li>
+    </ol>
+  </section>
+
+</div>
+</body>
+</html>
