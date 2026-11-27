@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기 · 정세영</title>
+<meta name="description" content="2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body class="case-page">
+<div class="wrap">
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">개인 프로젝트</span>
+        <span>2026</span>
+        <span>북메이트 리팩토링</span>
+        <span>미니PC 운영 배포</span>
+      </div>
+      <div class="case-body">
+        <h3>2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기</h3>
+        <p class="lead">부트캠프에서 만든 북메이트를 그냥 두기 아까워서, 문제점을 하나씩 고치고 실제 서버에 올려 운영해 보고 있습니다. 회사에서 레거시를 다룰 때처럼 한 번에 다 바꾸지 않고 단계를 나눠 진행합니다.</p>
+        <dl class="steps">
+          <dt>단계</dt>
+          <dd><ul>
+            <li><strong>Phase 0 · 기준 잡기</strong>: 문서와 실제 DB가 달랐던 스키마를 맞춰 Flyway로 관리하고, 코드에 있던 비밀 값을 환경변수로 뺐습니다. 이후 수정이 기존 기능을 깨지 않는지 확인할 통합 테스트도 만들었습니다.</li>
+            <li><strong>Phase 1 · 보안</strong>: Spring Security로 로그인과 권한 검사를 붙이고, 데이터를 바꾸는 요청은 POST와 CSRF 보호를 거치게 바꿨습니다.</li>
+            <li><strong>Phase 3 · 업그레이드</strong>: Spring Boot 2.7을 3.5로, Java를 21로 올렸습니다.</li>
+            <li><strong>다음 단계</strong>: 서비스 계층 정리(Phase 2)와 Spring Boot 4 업그레이드</li>
+          </ul></dd>
+          <dt>운영</dt>
+          <dd>미니PC(Ubuntu)에 nginx로 서비스를 띄웠습니다. master에 push 하면 GitHub Actions가 자동으로 배포하고, 배포 뒤에는 스모크 테스트로 서비스가 정상인지 확인합니다.</dd>
+          <dt>기록</dt>
+          <dd>단계마다 무엇을 왜 바꿨는지 저장소의 <code>docs/refactoring</code> 문서로 남깁니다.</dd>
+          <dt>링크</dt>
+          <dd>서비스 <a href="https://bookmate.p-e.kr">bookmate.p-e.kr</a> · 코드 <a href="https://github.com/ar2723/Bookmate">github.com/ar2723/Bookmate</a></dd>
+        </dl>
+      </div>
+    </article>
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+</div>
+</body>
+</html>

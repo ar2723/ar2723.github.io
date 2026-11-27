@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>컬럼 하나를 추가했다가 자동신청 배치가 5일간 멈춘 일 · 정세영</title>
+<meta name="description" content="컬럼 하나를 추가했다가 자동신청 배치가 5일간 멈춘 일">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body class="case-page">
+<div class="wrap">
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">장애 대응</span>
+        <span>2024.08</span>
+        <span>Oracle 프로시저</span>
+        <span>자동신청 배치</span>
+      </div>
+      <div class="case-body">
+        <h3>컬럼 하나를 추가했다가 자동신청 배치가 5일간 멈춘 일</h3>
+        <p class="lead">기능 개발을 위해 복지카드 비용신청 테이블에 NOT NULL 컬럼을 하나 추가했습니다. 이 테이블에 데이터를 넣는 프로시저까지는 확인하지 못한 채, 기존 기능에는 영향이 없을 거라고 판단했습니다.</p>
+        <dl class="steps">
+          <dt>원인</dt>
+          <dd><ul>
+            <li><strong>직접 원인</strong>: 자동신청 프로시저는 컬럼 이름을 적지 않고 모든 컬럼에 한꺼번에 값을 넣는 방식이었습니다. 새 컬럼에는 빈 값이 들어가 NOT NULL 조건에 걸렸고, 배치가 매일 실패했습니다.</li>
+            <li><strong>늦게 안 이유</strong>: 배치 결과 로그를 바로 확인하지 못해 5일이 지나서야 알게 됐습니다.</li>
+            <li><strong>근본 원인</strong>: 이 배치와 프로시저에 대한 인수인계가 전혀 없었고, 소스 구조도 파악하기 어려운 상태였습니다.</li>
+          </ul></dd>
+          <dt>대응</dt>
+          <dd><ul>
+            <li>멈춰 있던 5일치 매출을 수기로 신청 처리했습니다. 이때 직접 신청하기로 설정한 고객의 건까지 함께 처리되는 문제가 생겼습니다.</li>
+            <li>잘못 처리된 건은 고객사별로 화면의 반려 기능을 써서 되돌렸습니다. DB 값만 바꾸면 차감된 포인트가 복구되지 않기 때문입니다.</li>
+            <li>작업 전에 대상 데이터를 백업해 두어, 처리 도중 데이터가 바뀌었을 때도 맞춰서 보정할 수 있었습니다.</li>
+          </ul></dd>
+          <dt>남긴 것</dt>
+          <dd><ul>
+            <li>테이블 구조를 바꾸기 전에, 그 테이블을 쓰는 프로시저와 배치를 먼저 찾는다.</li>
+            <li>운영 중인 테이블에 NOT NULL 컬럼은 함부로 추가하지 않는다.</li>
+            <li>배치를 바꾼 뒤에는 수행 결과 로그를 바로 확인한다.</li>
+          </ul></dd>
+        </dl>
+        <div class="numbers">
+          <div><b>5일</b><span>배치 중단</span></div>
+          <div><b>약 1,700건</b><span>잘못 신청된 건 (7개 고객사)</span></div>
+          <div><b>1,229건</b><span>일괄 반려·포인트 복구</span></div>
+        </div>
+      </div>
+    </article>
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>임시공휴일 하나가 빠져서 9개 카드사 환급이 어긋난 날 · 정세영</title>
+<meta name="description" content="임시공휴일 하나가 빠져서 9개 카드사 환급이 어긋난 날">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body class="case-page">
+<div class="wrap">
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">장애 대응</span>
+        <span>2024.10</span>
+        <span>복지카드 대외계</span>
+        <span>카드사 9곳 · 환급 전문</span>
+      </div>
+      <div class="case-body">
+        <h3>임시공휴일 하나가 빠져서 9개 카드사 환급이 어긋난 날</h3>
+        <p class="lead">로직 오류가 아니었습니다. 휴일 목록에 새로 지정된 임시공휴일이 등록되지 않았고, 이 등록이 필요하다는 내용이 인수인계에 없었습니다. 그래서 모든 배치가 그날을 평일로 처리했고, 하필 환급 요청이 몰리는 매월 1일이었습니다.</p>
+        <dl class="steps">
+          <dt>상황</dt>
+          <dd>카드사는 휴일이라 우리가 보낸 파일을 처리하지 않았는데, 우리 쪽에는 환급 요청과 정산 데이터가 이미 만들어져 있었습니다. 카드사마다 처리된 범위가 제각각이었습니다.</dd>
+          <dt>대응</dt>
+          <dd><ul>
+            <li>카드사 9곳 담당자에게 일일이 연락해 파일을 받았는지, 어디까지 처리됐는지 확인했습니다. 기술 작업보다 이 연락과 일정 조율이 가장 힘든 부분이었습니다.</li>
+            <li>확인한 결과에 맞춰 카드사별로 배치를 수기로 다시 돌리거나, 파일을 고쳐서 다시 보냈습니다.</li>
+            <li>처리한 뒤에도 비어 있는 데이터나 처리되지 않은 매출 내역이 계속 나와, 한동안 재처리를 반복했습니다. 재전송 사이에 새로 승인된 건 때문에 생긴 정산 금액 차이는 데이터를 보정하고 운영팀에 사유를 설명했습니다.</li>
+          </ul></dd>
+          <dt>남긴 것</dt>
+          <dd><ul>
+            <li>이 사고의 교훈은 인수인계입니다. 휴일 등록처럼 로직 밖에 있지만 반드시 챙겨야 하는 운영 작업은, 책임감을 갖고 문서로 남기고 계속 갱신해서 다음 담당자에게 꼭 전달해야 사고가 나지 않습니다.</li>
+            <li>그래서 휴일 관리, 카드사별 재처리 방법, 환급을 다시 보낼 때 주의할 점을 처리 지침 문서로 정리했습니다.</li>
+          </ul></dd>
+        </dl>
+        <div class="numbers">
+          <div><b>9곳</b><span>영향 카드사</span></div>
+          <div><b>5,600건+</b><span>다시 보낸 환급 건 (기록된 4곳 합계)</span></div>
+        </div>
+      </div>
+    </article>
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+</div>
+</body>
+</html>

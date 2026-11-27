@@ -8,121 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<style>
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; }
-/* Layout: 한 줄기 단일 컬럼. 사례마다 왼쪽에 배치 로그 같은 메타, 오른쪽에 상황→원인→대응→남긴 것 */
-:root {
-  --bg: #f6f7f9;
-  --surface: #ffffff;
-  --fg: #1b2230;
-  --muted: #5a6475;
-  --line: #dde2ea;
-  --accent: #1d5c8c;
-  --accent-soft: #e4eef7;
-  --todo: #9a5b00;
-  --todo-soft: #fbf0dc;
-  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2b3340;
-    --accent: #7db4e0; --accent-soft: #1d2c3b; --todo: #e7b25c; --todo-soft: #2e2414;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #12161d; --surface: #1a2029; --fg: #e3e8ef; --muted: #9aa5b5; --line: #2b3340;
-  --accent: #7db4e0; --accent-soft: #1d2c3b; --todo: #e7b25c; --todo-soft: #2e2414;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-body {
-  background: var(--bg); color: var(--fg);
-  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 48px 72px;
-}
-.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 56px; }
-h1, h2, h3 { text-wrap: balance; line-height: 1.3; margin: 0; }
-h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.01em; }
-h2 { font-size: 1.3rem; font-weight: 700; }
-h3 { font-size: 1.12rem; font-weight: 600; }
-p { margin: 0; }
-.mono { font-family: var(--font-mono); font-size: 0.82rem; }
-.label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.todo {
-  display: inline-block; font-family: var(--font-mono); font-size: 0.72rem;
-  color: var(--todo); background: var(--todo-soft); border-radius: 4px; padding: 1px 6px; margin-left: 4px;
-  vertical-align: 2px; white-space: nowrap;
-}
-
-/* 머리말 */
-header { display: grid; gap: 14px; }
-header .role { font-size: 1.05rem; color: var(--muted); }
-dl.profile { display: grid; grid-template-columns: 52px 1fr; gap: 8px 16px; margin: 4px 0 0; max-width: 62ch; }
-dl.profile dt { font-weight: 600; font-size: 0.9rem; color: var(--muted); padding-top: 1px; }
-dl.profile dd { margin: 0; min-width: 0; }
-dl.profile ul { margin: 0; padding-left: 1.1em; }
-dl.profile li + li { margin-top: 2px; }
-.stack { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip { font-family: var(--font-mono); font-size: 0.78rem; border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; color: var(--fg); background: var(--surface); }
-
-/* 경력 */
-section { display: grid; gap: 20px; }
-.timeline { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.tl-row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
-.tl-row > * { min-width: 0; }
-.tl-when { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
-.tl-what strong { font-weight: 600; }
-.tl-what p { color: var(--muted); font-size: 0.95rem; }
-.tl-row.now .tl-when { color: var(--accent); }
-
-/* 사례 */
-.case { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
-.case > * { min-width: 0; }
-.case-meta { display: grid; gap: 6px; align-content: start; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.case-meta .tag { color: var(--accent); }
-.case-body { display: grid; gap: 16px; }
-.case-body > p.lead { color: var(--muted); }
-dl.steps { display: grid; grid-template-columns: 76px 1fr; gap: 10px 16px; margin: 0; }
-dl.steps dt { font-weight: 600; font-size: 0.9rem; color: var(--accent); padding-top: 1px; }
-dl.steps dd { margin: 0; min-width: 0; }
-dl.steps ul { margin: 0; padding-left: 1.1em; }
-dl.steps li + li { margin-top: 4px; }
-.numbers { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 12px 14px; background: var(--accent-soft); border-radius: 4px; }
-.numbers div { display: grid; }
-.numbers b { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 500; font-variant-numeric: tabular-nums; }
-.numbers span { font-size: 0.8rem; color: var(--muted); }
-code { font-family: var(--font-mono); font-size: 0.86em; background: var(--accent-soft); padding: 0 4px; border-radius: 3px; }
-.flows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
-.flows figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
-.flows a { display: block; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: #f5f5f5; }
-.flows img { display: block; width: 100%; height: auto; }
-.flows figcaption { font-size: 0.82rem; color: var(--muted); }
-@media (max-width: 640px) { .flows { grid-template-columns: 1fr; } }
-
-/* 원칙 */
-ol.rules { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; max-width: 68ch; }
-ol.rules li::marker { font-family: var(--font-mono); color: var(--accent); }
-ol.rules small { display: block; color: var(--muted); font-size: 0.85rem; }
-
-a { color: var(--accent); }
-a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-@media (max-width: 640px) {
-  body { padding-block: 32px 56px; }
-  h1 { font-size: 1.7rem; }
-  .tl-row { grid-template-columns: 1fr; gap: 2px; }
-  .case { grid-template-columns: 1fr; padding: 20px; gap: 14px; }
-  .case-meta { grid-auto-flow: row; }
-  dl.steps { grid-template-columns: 1fr; gap: 2px; }
-  dl.steps dd { margin-bottom: 10px; }
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -181,168 +67,58 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   </section>
 
   <section aria-labelledby="cases">
-    <h2 id="cases">대표 사례</h2>
+    <h2 id="cases">프로젝트와 장애 대응 사례</h2>
+    <div class="groups">
 
-    <article class="case">
-      <div class="case-meta">
-        <span class="tag">장애 대응</span>
-        <span>2024.10</span>
-        <span>복지카드 대외계</span>
-        <span>카드사 9곳 · 환급 전문</span>
-      </div>
-      <div class="case-body">
-        <h3>임시공휴일 하나가 빠져서 9개 카드사 환급이 어긋난 날</h3>
-        <p class="lead">로직 오류가 아니었습니다. 휴일 목록에 새로 지정된 임시공휴일이 등록되지 않았고, 이 등록이 필요하다는 내용이 인수인계에 없었습니다. 그래서 모든 배치가 그날을 평일로 처리했고, 하필 환급 요청이 몰리는 매월 1일이었습니다.</p>
-        <dl class="steps">
-          <dt>상황</dt>
-          <dd>카드사는 휴일이라 우리가 보낸 파일을 처리하지 않았는데, 우리 쪽에는 환급 요청과 정산 데이터가 이미 만들어져 있었습니다. 카드사마다 처리된 범위가 제각각이었습니다.</dd>
-          <dt>대응</dt>
-          <dd><ul>
-            <li>카드사 9곳 담당자에게 일일이 연락해 파일을 받았는지, 어디까지 처리됐는지 확인했습니다. 기술 작업보다 이 연락과 일정 조율이 가장 힘든 부분이었습니다.</li>
-            <li>확인한 결과에 맞춰 카드사별로 배치를 수기로 다시 돌리거나, 파일을 고쳐서 다시 보냈습니다.</li>
-            <li>처리한 뒤에도 비어 있는 데이터나 처리되지 않은 매출 내역이 계속 나와, 한동안 재처리를 반복했습니다. 재전송 사이에 새로 승인된 건 때문에 생긴 정산 금액 차이는 데이터를 보정하고 운영팀에 사유를 설명했습니다.</li>
-          </ul></dd>
-          <dt>남긴 것</dt>
-          <dd><ul>
-            <li>이 사고의 교훈은 인수인계입니다. 휴일 등록처럼 로직 밖에 있지만 반드시 챙겨야 하는 운영 작업은, 책임감을 갖고 문서로 남기고 계속 갱신해서 다음 담당자에게 꼭 전달해야 사고가 나지 않습니다.</li>
-            <li>그래서 휴일 관리, 카드사별 재처리 방법, 환급을 다시 보낼 때 주의할 점을 처리 지침 문서로 정리했습니다.</li>
-          </ul></dd>
-        </dl>
-        <div class="numbers">
-          <div><b>9곳</b><span>영향 카드사</span></div>
-          <div><b>5,600건+</b><span>다시 보낸 환급 건 (기록된 4곳 합계)</span></div>
+      <div class="group">
+        <div class="group-head"><h3>위엔 · 이제너두 복지 플랫폼</h3><span>2023.11 – 2025.07</span></div>
+        <div class="cards">
+          <a class="card" href="cases/health-settlement.html">
+            <div class="card-meta"><span class="tag">개발</span><span>2023.11 – 2024</span></div>
+            <strong>첫 프로젝트에서 맡은 건강검진 운영비 정산 배치와 선입금 차감 로직</strong>
+            <p>이어받은 정산 배치와 선입금 차감 로직을 플로우 차트와 케이스별 테스트로 검증했습니다.</p>
+            <span class="go">자세히 보기 →</span>
+          </a>
+          <a class="card" href="cases/welfare-batch-column.html">
+            <div class="card-meta"><span class="tag">장애 대응</span><span>2024.08</span></div>
+            <strong>컬럼 하나를 추가했다가 자동신청 배치가 5일간 멈춘 일</strong>
+            <p>프로시저 영향도를 놓쳐 멈춘 배치를 복구하고, 잘못 처리된 1,229건을 되돌렸습니다.</p>
+            <span class="go">자세히 보기 →</span>
+          </a>
+          <a class="card" href="cases/welfare-holiday.html">
+            <div class="card-meta"><span class="tag">장애 대응</span><span>2024.10</span></div>
+            <strong>임시공휴일 하나가 빠져서 9개 카드사 환급이 어긋난 날</strong>
+            <p>카드사별로 환급을 재처리하고, 운영 작업을 인수인계 문서로 남기는 일의 중요성을 정리했습니다.</p>
+            <span class="go">자세히 보기 →</span>
+          </a>
         </div>
       </div>
-    </article>
 
-    <article class="case">
-      <div class="case-meta">
-        <span class="tag">장애 대응</span>
-        <span>2024.08</span>
-        <span>Oracle 프로시저</span>
-        <span>자동신청 배치</span>
-      </div>
-      <div class="case-body">
-        <h3>컬럼 하나를 추가했다가 자동신청 배치가 5일간 멈춘 일</h3>
-        <p class="lead">기능 개발을 위해 복지카드 비용신청 테이블에 NOT NULL 컬럼을 하나 추가했습니다. 이 테이블에 데이터를 넣는 프로시저까지는 확인하지 못한 채, 기존 기능에는 영향이 없을 거라고 판단했습니다.</p>
-        <dl class="steps">
-          <dt>원인</dt>
-          <dd><ul>
-            <li><strong>직접 원인</strong>: 자동신청 프로시저는 컬럼 이름을 적지 않고 모든 컬럼에 한꺼번에 값을 넣는 방식이었습니다. 새 컬럼에는 빈 값이 들어가 NOT NULL 조건에 걸렸고, 배치가 매일 실패했습니다.</li>
-            <li><strong>늦게 안 이유</strong>: 배치 결과 로그를 바로 확인하지 못해 5일이 지나서야 알게 됐습니다.</li>
-            <li><strong>근본 원인</strong>: 이 배치와 프로시저에 대한 인수인계가 전혀 없었고, 소스 구조도 파악하기 어려운 상태였습니다.</li>
-          </ul></dd>
-          <dt>대응</dt>
-          <dd><ul>
-            <li>멈춰 있던 5일치 매출을 수기로 신청 처리했습니다. 이때 직접 신청하기로 설정한 고객의 건까지 함께 처리되는 문제가 생겼습니다.</li>
-            <li>잘못 처리된 건은 고객사별로 화면의 반려 기능을 써서 되돌렸습니다. DB 값만 바꾸면 차감된 포인트가 복구되지 않기 때문입니다.</li>
-            <li>작업 전에 대상 데이터를 백업해 두어, 처리 도중 데이터가 바뀌었을 때도 맞춰서 보정할 수 있었습니다.</li>
-          </ul></dd>
-          <dt>남긴 것</dt>
-          <dd><ul>
-            <li>테이블 구조를 바꾸기 전에, 그 테이블을 쓰는 프로시저와 배치를 먼저 찾는다.</li>
-            <li>운영 중인 테이블에 NOT NULL 컬럼은 함부로 추가하지 않는다.</li>
-            <li>배치를 바꾼 뒤에는 수행 결과 로그를 바로 확인한다.</li>
-          </ul></dd>
-        </dl>
-        <div class="numbers">
-          <div><b>5일</b><span>배치 중단</span></div>
-          <div><b>약 1,700건</b><span>잘못 신청된 건 (7개 고객사)</span></div>
-          <div><b>1,229건</b><span>일괄 반려·포인트 복구</span></div>
+      <div class="group">
+        <div class="group-head"><h3>라이너스 · 에듀테크 LMS</h3><span>2025.07 – 2025.09</span></div>
+        <div class="cards">
+          <a class="card" href="cases/linus-saml-sso.html">
+            <div class="card-meta"><span class="tag">연동</span><span>2025.07 – 09</span></div>
+            <strong>인증하는 척만 하던 Canvas 연동을 실제 SAML SSO로 완성</strong>
+            <p>인증 없이 통과하던 연동을, 인증서 서명을 검증해야 로그인되는 실제 SSO로 바꿨습니다.</p>
+            <span class="go">자세히 보기 →</span>
+          </a>
         </div>
       </div>
-    </article>
 
-    <article class="case">
-      <div class="case-meta">
-        <span class="tag">개발</span>
-        <span>2023.11 – 2024</span>
-        <span>건강검진 정산</span>
-        <span>첫 프로젝트</span>
-      </div>
-      <div class="case-body">
-        <h3>첫 프로젝트에서 맡은 건강검진 운영비 정산 배치와 선입금 차감 로직</h3>
-        <p class="lead">2023년 11월 입사 후 처음 배정받은 프로젝트입니다. 처음에는 고객사 건강검진 대행 운영비를 정산하는 화면의 조회·수정 기능만 맡았습니다. 기존 개발자가 PM으로 옮기면서 운영비 정산 배치를 이어받았고, 중간에 검진비 선입금 차감 로직까지 개발했습니다.</p>
-        <dl class="steps">
-          <dt>만든 것</dt>
-          <dd><ul>
-            <li><strong>운영비 정산 배치</strong>: 고객사별 운영비 기준(청구 주기, 금액, 청구 단위 등)을 읽어 이번 달 청구 대상인지 판단하고, 이미 만든 정산 내역과 비교해 새로 만들거나 고칩니다.</li>
-            <li><strong>선입금 차감</strong>: 고객사가 미리 낸 검진비에서 정산 건마다 금액을 차감합니다. 한 선입금의 잔액이 모자라면 다음 선입금으로 넘어가 남은 금액을 마저 차감합니다.</li>
-          </ul></dd>
-          <dt>검증</dt>
-          <dd><ul>
-            <li>금액을 다루는 로직이라, 두 로직 모두 플로우 차트를 먼저 그려 PM에게 검증받은 뒤 개발했습니다.</li>
-            <li>배치는 청구 주기, 청구 단위, 금액 단위 같은 기준을 하나씩 바꿔 가며 엑셀로 테스트 케이스를 만들고, 예상 결과와 실제 결과를 하나하나 대조했습니다. 이 과정에서 기준과 기존 정산 내역을 비교하는 로직의 오류를 찾아 고쳤습니다.</li>
-            <li>로컬에서는 IntelliJ 디버거로 단계마다 값을 직접 확인했습니다.</li>
-          </ul></dd>
-          <dt>결과</dt>
-          <dd>오픈 후 정산 오류가 거의 없었습니다.</dd>
-        </dl>
-        <div class="flows">
-          <figure>
-            <a href="images/opex-batch.png" target="_blank" rel="noopener"><img src="images/opex-batch.png" alt="운영비 정산 배치 흐름도: 기준정보 조회, 청구 대상 기간 계산, 기존 정산 내역과 비교 후 INSERT 또는 UPDATE" loading="lazy" width="1545" height="1681"></a>
-            <figcaption>운영비 정산 배치 흐름도 (PM 검증용으로 작성, 누르면 크게 보기)</figcaption>
-          </figure>
-          <figure>
-            <a href="images/prepay.png" target="_blank" rel="noopener"><img src="images/prepay.png" alt="선입금 차감 흐름도: 정산 건마다 선입금 잔액에서 차감하고, 부족하면 다음 선입금으로 넘어가 반복" loading="lazy" width="1545" height="1681"></a>
-            <figcaption>선입금 차감 흐름도 (누르면 크게 보기)</figcaption>
-          </figure>
+      <div class="group">
+        <div class="group-head"><h3>개인 프로젝트</h3><span>2026 –</span></div>
+        <div class="cards">
+          <a class="card" href="cases/bookmate-refactoring.html">
+            <div class="card-meta"><span class="tag">리팩토링 · 운영</span><span>2026</span></div>
+            <strong>2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기</strong>
+            <p>북메이트를 단계별로 리팩토링하고, 미니PC에 직접 배포해 운영하고 있습니다.</p>
+            <span class="go">자세히 보기 →</span>
+          </a>
         </div>
       </div>
-    </article>
 
-    <article class="case">
-      <div class="case-meta">
-        <span class="tag">연동</span>
-        <span>2025.07 – 09</span>
-        <span>SAML 2.0</span>
-        <span>Canvas LMS</span>
-      </div>
-      <div class="case-body">
-        <h3>인증하는 척만 하던 Canvas 연동을 실제 SAML SSO로 완성</h3>
-        <p class="lead">회사가 새 LMS 포털을 만들면서 Canvas와 로그인을 연동해야 했습니다. 기존 코드는 Canvas 쪽 인증 부분을 주석 처리해 두고, 실제 인증 없이 로그인된 것처럼 동작하고 있었습니다. 다른 개발자가 만들던 SSO 연동 모듈을 이어받아 실제로 인증이 되도록 완성했습니다.</p>
-        <dl class="steps">
-          <dt>정리</dt>
-          <dd>먼저 인증 흐름을 정리했습니다. 포털은 사용자를 인증하는 쪽(IdP), Canvas는 그 결과를 믿고 로그인시키는 쪽(SP)으로 역할을 정했습니다. SAML 표준과 Canvas 설정을 GPT와 함께 하나씩 대조하며 요청부터 로그인까지 순서를 확인했습니다.</dd>
-          <dt>구현</dt>
-          <dd><ul>
-            <li>Canvas가 받아들이는 인증 응답 XML 양식을 확정해 템플릿으로 만들었습니다.</li>
-            <li>OpenSSL로 인증서와 개인키를 발급하고, 응답 XML에 전자서명을 넣었습니다.</li>
-            <li>Canvas에 인증서를 등록해, 서명이 검증된 응답만 로그인되도록 했습니다.</li>
-          </ul></dd>
-          <dt>결과</dt>
-          <dd>인증 없이 통과하던 연동이 서명 검증을 거치는 실제 SSO가 되었습니다. 같은 방식을 영상 플랫폼 Panopto에도 적용했고, 설정 방법과 인증 흐름을 Confluence 문서로 남겨 개발자들과 리뷰했습니다.</dd>
-        </dl>
-      </div>
-    </article>
-
-    <article class="case">
-      <div class="case-meta">
-        <span class="tag">개인 프로젝트</span>
-        <span>2026</span>
-        <span>북메이트 리팩토링</span>
-        <span>미니PC 운영 배포</span>
-      </div>
-      <div class="case-body">
-        <h3>2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기</h3>
-        <p class="lead">부트캠프에서 만든 북메이트를 그냥 두기 아까워서, 문제점을 하나씩 고치고 실제 서버에 올려 운영해 보고 있습니다. 회사에서 레거시를 다룰 때처럼 한 번에 다 바꾸지 않고 단계를 나눠 진행합니다.</p>
-        <dl class="steps">
-          <dt>단계</dt>
-          <dd><ul>
-            <li><strong>Phase 0 · 기준 잡기</strong>: 문서와 실제 DB가 달랐던 스키마를 맞춰 Flyway로 관리하고, 코드에 있던 비밀 값을 환경변수로 뺐습니다. 이후 수정이 기존 기능을 깨지 않는지 확인할 통합 테스트도 만들었습니다.</li>
-            <li><strong>Phase 1 · 보안</strong>: Spring Security로 로그인과 권한 검사를 붙이고, 데이터를 바꾸는 요청은 POST와 CSRF 보호를 거치게 바꿨습니다.</li>
-            <li><strong>Phase 3 · 업그레이드</strong>: Spring Boot 2.7을 3.5로, Java를 21로 올렸습니다.</li>
-            <li><strong>다음 단계</strong>: 서비스 계층 정리(Phase 2)와 Spring Boot 4 업그레이드</li>
-          </ul></dd>
-          <dt>운영</dt>
-          <dd>미니PC(Ubuntu)에 nginx로 서비스를 띄웠습니다. master에 push 하면 GitHub Actions가 자동으로 배포하고, 배포 뒤에는 스모크 테스트로 서비스가 정상인지 확인합니다.</dd>
-          <dt>기록</dt>
-          <dd>단계마다 무엇을 왜 바꿨는지 저장소의 <code>docs/refactoring</code> 문서로 남깁니다.</dd>
-          <dt>링크</dt>
-          <dd>서비스 <a href="https://bookmate.p-e.kr">bookmate.p-e.kr</a> · 코드 <a href="https://github.com/ar2723/Bookmate">github.com/ar2723/Bookmate</a></dd>
-        </dl>
-      </div>
-    </article>
+    </div>
   </section>
 
   <!-- 운영 원칙 섹션: 문구 정리 전까지 숨김(별도 페이지로 분리 검토 중). 다시 보이려면 hidden 속성을 지운다. -->
