@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KCP PG 정산 API 연동: 암호화된 개인키로 전자서명 만들기 · 정세영</title>
+<meta name="description" content="KCP PG 정산 API 연동: 암호화된 개인키로 전자서명 만들기">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../styles.css?v=20261127b">
+</head>
+<body class="case-page">
+<div class="wrap">
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+    <article class="case">
+      <div class="case-meta">
+        <span class="tag">연동</span>
+        <span>2025</span>
+        <span>KCP PG</span>
+        <span>전자서명 · SHA256withRSA</span>
+      </div>
+      <div class="case-body">
+        <h3>KCP PG 정산 API 연동: 암호화된 개인키로 전자서명 만들기</h3>
+        <p class="lead">복지카드 서비스에 KCP PG 정산대사 API를 연동하는 일을 맡았습니다. API를 호출할 때마다 전자서명 값을 함께 보내야 했는데, 당시에는 개인키나 인증서 개념을 잘 몰라서 많이 헤맸습니다.</p>
+        <dl class="steps">
+          <dt>과제</dt>
+          <dd>KCP에서 암호화된 개인키 파일(PEM)과 그 비밀번호를 받았고, 요청 데이터를 SHA256withRSA 방식으로 서명해서 보내야 했습니다.</dd>
+          <dt>해결</dt>
+          <dd><ul>
+            <li>API 문서로 요청 규격을 확인하고, 서명을 만드는 과정을 단계별로 나눠 접근했습니다.</li>
+            <li>PEM 파일, 개인키 암호화, 전자서명 개념을 GPT로 먼저 정리하고, 어떤 라이브러리(Bouncy Castle)와 클래스를 써야 하는지 검색으로 확인했습니다.</li>
+            <li>암호화된 개인키를 읽어 비밀번호로 풀고, Java 개인키 객체로 바꾼 뒤 서명을 만들어 Base64로 인코딩하는 모듈을 작성했습니다.</li>
+            <li>디버깅하면서 단계마다 결과가 맞는지 확인했고, 모르는 부분은 개발팀장님께 물어서 확인했습니다.</li>
+          </ul></dd>
+          <dt>결과</dt>
+          <dd>서명 모듈을 완성해 정산대사 API 연동을 마쳤고, 이후 연동 배치 작업을 모니터링했습니다.</dd>
+          <dt>남긴 것</dt>
+          <dd>같은 문제를 다시 겪지 않도록 서명 모듈과 개념을 블로그에 정리했습니다. <a href="https://velog.io/@ar2723/Java-SHA256withRSA-%EC%84%9C%EB%AA%85%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9D%B8%EC%BD%94%EB%94%A9-%EC%B2%98%EB%A6%AC" target="_blank" rel="noopener">Velog: SHA256withRSA 서명데이터 인코딩 처리</a></dd>
+        </dl>
+        <figure class="xml">
+<pre class="code"><code><span class="c">// 서명을 만드는 순서 (상세 코드는 블로그 글 참고)</span>
+1. PEMParser 로 암호화된 개인키(PKCS#8) 읽기
+2. 받은 비밀번호로 개인키 복호화        → PrivateKeyInfo
+3. DER 바이트로 바꿔 RSA PrivateKey 생성 → KeyFactory.getInstance("RSA")
+4. Signature.getInstance("SHA256withRSA") 를 개인키로 초기화
+5. 서명 대상 데이터를 넣고 서명 생성
+6. 서명 결과를 Base64 문자열로 인코딩해 요청 파라미터로 전달</code></pre>
+          <figcaption>암호화된 개인키에서 전자서명 값을 만들기까지의 단계입니다.</figcaption>
+        </figure>
+      </div>
+    </article>
+  <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
+</div>
+</body>
+</html>
