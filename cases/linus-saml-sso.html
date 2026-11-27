@@ -43,6 +43,55 @@
           <a href="../images/canvas-saml-settings.png" target="_blank" rel="noopener"><img src="../images/canvas-saml-settings.png" alt="Canvas 관리자 인증 설정 화면: IdP Entity ID, Log On URL, Log Out URL, 인증서 지문, Login Attribute 항목. 회사 Canvas 주소와 인증서 지문은 가림" loading="lazy" width="997" height="604"></a>
           <figcaption>Canvas 관리자 화면의 SAML 설정. 포털 서버 주소(IdP)와 로그인·로그아웃 주소, 인증서 지문을 등록해 Canvas가 서명을 검증하게 했습니다. 회사 Canvas 주소와 인증서 지문은 가렸습니다. (누르면 크게 보기)</figcaption>
         </figure>
+        <figure class="xml">
+<pre class="code"><code><span class="c">&lt;!-- ③ Canvas → 포털 서버: 인증 요청 (SAML Request) --&gt;</span>
+&lt;samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    AssertionConsumerServiceURL="https://<span class="mask">회사 Canvas 주소</span>/login/saml"
+    Destination="http://localhost:3050/api/v1/saml/login.do"
+    ID="_17fd58ae-2812-47cd-968d-4674dbded9be"
+    IssueInstant="2025-08-12T04:09:46Z"
+    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    Version="2.0"&gt;
+  &lt;saml:Issuer&gt;http://<span class="mask">회사 Canvas 주소</span>/saml2&lt;/saml:Issuer&gt;
+  &lt;samlp:NameIDPolicy AllowCreate="true"
+      Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"/&gt;
+&lt;/samlp:AuthnRequest&gt;</code></pre>
+          <figcaption>Canvas가 포털 서버로 보내는 인증 요청입니다. 서버는 이 요청을 검증하고 디코딩해서 필요한 값을 꺼냅니다.</figcaption>
+        </figure>
+        <figure class="xml">
+<pre class="code"><code><span class="c">&lt;!-- ④ 포털 서버 → Canvas: 서명한 인증 응답 (SAML Response, 주요 부분) --&gt;</span>
+&lt;samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    Destination="https://<span class="mask">회사 Canvas 주소</span>/courses/<span class="mask">과제 경로</span>"
+    InResponseTo="_0e56494a-883d-4092-82ba-d746ace011b3" Version="2.0"&gt;
+  &lt;saml:Issuer&gt;http://localhost:3050/api/v1/saml/login.do&lt;/saml:Issuer&gt;
+  &lt;samlp:Status&gt;
+    &lt;samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/&gt;
+  &lt;/samlp:Status&gt;
+  &lt;saml:Assertion ID="_95c9c466-3204-44a0-9254-1e893bb6edc4" Version="2.0"&gt;
+    &lt;saml:Issuer&gt;http://localhost:3050/api/v1/saml/login.do&lt;/saml:Issuer&gt;
+    <span class="c">&lt;!-- Issuer 바로 다음에 전자서명이 들어가야 Canvas가 검증한다 --&gt;</span>
+    &lt;ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;
+      &lt;ds:SignedInfo&gt; … &lt;/ds:SignedInfo&gt;
+      &lt;ds:SignatureValue&gt; … &lt;/ds:SignatureValue&gt;
+      &lt;ds:KeyInfo&gt;&lt;ds:X509Data&gt;&lt;ds:X509Certificate&gt; … &lt;/ds:X509Certificate&gt;&lt;/ds:X509Data&gt;&lt;/ds:KeyInfo&gt;
+    &lt;/ds:Signature&gt;
+    &lt;saml:Subject&gt;
+      &lt;saml:NameID&gt;<span class="mask">사용자 ID</span>&lt;/saml:NameID&gt;
+      &lt;saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:1.0:cm:bearer"&gt;
+        &lt;saml:SubjectConfirmationData NotOnOrAfter="2025-08-12T04:25:24Z"
+            Recipient="https://<span class="mask">회사 Canvas 주소</span>/login/saml"/&gt;
+      &lt;/saml:SubjectConfirmation&gt;
+    &lt;/saml:Subject&gt;
+    &lt;saml:Conditions NotBefore="2025-08-12T04:10:24Z" NotOnOrAfter="2025-08-12T04:25:24Z"&gt;
+      &lt;saml:AudienceRestriction&gt;
+        &lt;saml:Audience&gt;http://<span class="mask">회사 Canvas 주소</span>/saml2&lt;/saml:Audience&gt;
+      &lt;/saml:AudienceRestriction&gt;
+    &lt;/saml:Conditions&gt;
+  &lt;/saml:Assertion&gt;
+&lt;/samlp:Response&gt;</code></pre>
+          <figcaption>포털 서버가 템플릿으로 만들고 전자서명해서 Canvas로 돌려주는 인증 응답입니다. Canvas는 등록된 인증서로 서명을 확인한 뒤 NameID의 사용자로 로그인시킵니다. 회사 Canvas 주소, 과제 경로, 사용자 ID는 가렸습니다.</figcaption>
+        </figure>
       </div>
     </article>
   <a class="back" href="../index.html#cases">← 포트폴리오로 돌아가기</a>
