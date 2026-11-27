@@ -22,19 +22,28 @@
       </div>
       <div class="case-body">
         <h3>2023년 팀 프로젝트를 다시 꺼내 단계별로 고치고 직접 운영하기</h3>
-        <p class="lead">부트캠프에서 만든 북메이트를 그냥 두기 아까워서, 문제점을 하나씩 고치고 실제 서버에 올려 운영해 보고 있습니다. 회사에서 레거시를 다룰 때처럼 한 번에 다 바꾸지 않고 단계를 나눠 진행합니다.</p>
+        <p class="lead">부트캠프에서 만든 북메이트를 그냥 두기 아까워서, 문제점을 하나씩 고치고 실제 서버에 올려 운영하고 있습니다. 회사에서 레거시를 다룰 때처럼 한 번에 다 바꾸지 않고, 단계마다 테스트와 배포까지 확인한 뒤 다음 단계로 넘어갑니다.</p>
         <dl class="steps">
+          <dt>시작점</dt>
+          <dd><ul>
+            <li>지원이 끝난 Spring Boot 2.7의 SNAPSHOT 버전을 쓰고 있었고, 문서의 DB 구조와 실제 SQL이 서로 달랐습니다.</li>
+            <li>권한 검사는 메서드마다 세션 값을 직접 보는 방식이라 빈틈이 있었습니다. 관리자는 아이디 문자열로 판단했고, 로그인하지 않아도 남의 모임을 지울 수 있는 주소가 열려 있었습니다.</li>
+            <li>테스트는 기본으로 만들어진 것 하나뿐이었습니다.</li>
+          </ul></dd>
           <dt>단계</dt>
           <dd><ul>
-            <li><strong>Phase 0 · 기준 잡기</strong>: 문서와 실제 DB가 달랐던 스키마를 맞춰 Flyway로 관리하고, 코드에 있던 비밀 값을 환경변수로 뺐습니다. 이후 수정이 기존 기능을 깨지 않는지 확인할 통합 테스트도 만들었습니다.</li>
-            <li><strong>Phase 1 · 보안</strong>: Spring Security로 로그인과 권한 검사를 붙이고, 데이터를 바꾸는 요청은 POST와 CSRF 보호를 거치게 바꿨습니다.</li>
-            <li><strong>Phase 3 · 업그레이드</strong>: Spring Boot 2.7을 3.5로, Java를 21로 올렸습니다.</li>
+            <li><strong>Phase 0 · 기준 잡기</strong>: 실제로 쓰는 SQL을 기준으로 DB 구조를 다시 정리해 Flyway로 관리하고, 잘못 바뀌어 있던 SQL을 바로잡았습니다. 코드에 있던 비밀 값은 환경변수로 뺐습니다. 고치기 전에 지금 동작을 그대로 고정하는 테스트를 먼저 만들어, 이후 수정이 기존 기능을 깨지 않는지 확인할 수 있게 했습니다.</li>
+            <li><strong>Phase 1 · 보안</strong>: Spring Security로 로그인과 권한 검사를 한곳에 모았습니다. 데이터를 바꾸는 요청 19개를 GET에서 POST로 바꾸고 CSRF 보호를 적용했고, 업로드 이미지 조회에는 경로 검사를 추가했습니다.</li>
+            <li><strong>Phase 3 · 업그레이드</strong>: Spring Boot 3.5와 Java 21로 올리면서 javax 패키지를 jakarta로 바꾸고, 취약점이 알려진 라이브러리를 교체했습니다. 바뀐 뒤 화면 32개를 직접 열어 확인했습니다.</li>
             <li><strong>다음 단계</strong>: 서비스 계층 정리(Phase 2)와 Spring Boot 4 업그레이드</li>
           </ul></dd>
           <dt>운영</dt>
-          <dd>미니PC(Ubuntu)에 nginx로 서비스를 띄웠습니다. master에 push 하면 GitHub Actions가 자동으로 배포하고, 배포 뒤에는 스모크 테스트로 서비스가 정상인지 확인합니다.</dd>
-          <dt>기록</dt>
-          <dd>단계마다 무엇을 왜 바꿨는지 저장소의 <code>docs/refactoring</code> 문서로 남깁니다.</dd>
+          <dd>미니PC(Ubuntu)에 nginx와 HTTPS로 서비스를 띄웠습니다. master에 push 하면 GitHub Actions가 자동으로 배포하고, 배포 뒤에는 주요 화면 17개를 확인하는 스모크 테스트로 서비스가 정상인지 봅니다.</dd>
+          <dt>작업 방식</dt>
+          <dd><ul>
+            <li>단계마다 무엇을 왜 바꿨는지 저장소의 <code>docs/refactoring</code> 문서로 남깁니다.</li>
+            <li>AI 코딩 도구(Claude Code)를 쓰되, 검증은 테스트로 합니다. 커밋하면 바뀐 범위의 테스트가, push 하면 배포 확인과 스모크 테스트가 자동으로 돌도록 작업 흐름을 만들었습니다.</li>
+          </ul></dd>
           <dt>링크</dt>
           <dd>서비스 <a href="https://bookmate.p-e.kr">bookmate.p-e.kr</a> · 코드 <a href="https://github.com/ar2723/Bookmate">github.com/ar2723/Bookmate</a></dd>
         </dl>
