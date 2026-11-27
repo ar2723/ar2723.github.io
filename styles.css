@@ -133,3 +133,7 @@ a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { a.card { transition: none; } }
 .case-page .case h3 { font-size: 1.45rem; font-weight: 700; }
 .case-page .wrap { gap: 24px; }
+.shot { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.shot a { display: block; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.shot img { display: block; width: 100%; height: auto; }
+.shot figcaption { font-size: 0.82rem; color: var(--muted); }
