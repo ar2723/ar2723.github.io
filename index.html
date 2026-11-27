@@ -38,6 +38,7 @@ body { margin: 0; }
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg); color: var(--fg);
   font-family: var(--font-body); font-size: 16px; line-height: 1.7;
@@ -62,7 +63,11 @@ p { margin: 0; }
 /* 머리말 */
 header { display: grid; gap: 14px; }
 header .role { font-size: 1.05rem; color: var(--muted); }
-header .thesis { max-width: 62ch; font-size: 1.05rem; }
+dl.profile { display: grid; grid-template-columns: 52px 1fr; gap: 8px 16px; margin: 4px 0 0; max-width: 62ch; }
+dl.profile dt { font-weight: 600; font-size: 0.9rem; color: var(--muted); padding-top: 1px; }
+dl.profile dd { margin: 0; min-width: 0; }
+dl.profile ul { margin: 0; padding-left: 1.1em; }
+dl.profile li + li { margin-top: 2px; }
 .stack { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font-family: var(--font-mono); font-size: 0.78rem; border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; color: var(--fg); background: var(--surface); }
 
@@ -126,12 +131,22 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   <header>
     <span class="label">Backend Developer · Java / Spring</span>
     <h1>정세영</h1>
-    <p class="role">돈이 오가는 운영 시스템을 다뤄 온 3년차 백엔드 개발자</p>
-    <p class="thesis">영어교육을 전공했고, 흩어진 일을 절차로 만드는 데서 보람을 느껴 개발로 옮겼습니다. 복지포인트 정산, 카드사 대외계 전문, PG·SSO 연동처럼 실수가 바로 금액 차이로 이어지는 시스템을 운영해 왔습니다. 장애가 나면 원인과 재발 방지책을 문서로 남깁니다.</p>
+    <p class="role">Java/Spring 백엔드 개발자 · 3년차</p>
+    <dl class="profile">
+      <dt>학력</dt>
+      <dd>고려대학교(서울) 영어교육과 졸업</dd>
+      <dt>경험</dt>
+      <dd><ul>
+        <li>복지포인트 카드 차감·정산 시스템 개발 및 운영 (카드사 9곳 연동)</li>
+        <li>에듀테크 LMS 백엔드 개발, Canvas SAML SSO 연동</li>
+        <li>보험 고객관리 시스템 운영 (메트라이프, 재직 중)</li>
+      </ul></dd>
+      <dt>자격</dt>
+      <dd>정보처리기사 · SQLD</dd>
+    </dl>
     <div class="stack" aria-label="주요 기술">
       <span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">MyBatis</span><span class="chip">Oracle</span><span class="chip">JSP · jQuery</span><span class="chip">Shell 배치 · cron</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">nginx</span>
     </div>
-    <p class="mono" style="color:var(--muted)">정보처리기사 · SQLD</p>
   </header>
 
   <section aria-labelledby="career">
@@ -330,7 +345,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     </article>
   </section>
 
-  <section aria-labelledby="rules">
+  <!-- 운영 원칙 섹션: 문구 정리 전까지 숨김(별도 페이지로 분리 검토 중). 다시 보이려면 hidden 속성을 지운다. -->
+  <section aria-labelledby="rules" hidden>
     <h2 id="rules">운영하며 정한 원칙</h2>
     <ol class="rules">
       <li>운영 데이터를 고치기 전에는 먼저 백업하고, 고치기 전과 후의 조회 결과를 요청 기록에 남긴다.<small>약 240만 건의 개인정보를 파기할 때도 삭제 전, 삭제, 삭제 후의 조회 결과를 모두 첨부했습니다.</small></li>
