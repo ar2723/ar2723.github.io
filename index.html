@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261127c">
+<link rel="stylesheet" href="styles.css?v=20261127d">
 </head>
 <body id="top">
 <div class="layout">
@@ -17,24 +17,24 @@
   <ul class="side-top">
     <li><a href="#profile">약력</a></li>
     <li><a href="#career">경력</a></li>
-    <li><a href="#cases">주요 경험</a></li>
+    <li><a href="#cases">발자취</a></li>
   </ul>
-  <ul class="side-cases">
-    <li><a class="side-group" href="#g-mildang">밀당PT</a>
-      <ul><li><a href="cases/mildang-coda.html">Coda로 개발에 관심을 갖게 된 계기</a></li></ul></li>
-    <li><a class="side-group" href="#g-ween">위엔 · 이제너두</a>
+  <div class="side-cases">
+    <details><summary>밀당PT</summary>
+      <ul><li><a href="cases/mildang-coda.html">개발에 관심을 갖게 된 계기</a></li></ul></details>
+    <details><summary>위엔 · 이제너두</summary>
       <ul>
-        <li><a href="cases/health-settlement.html">건강검진 정산 배치·선입금 로직</a></li>
-        <li><a href="cases/welfare-batch-column.html">컬럼 추가로 멈춘 자동신청 배치</a></li>
-        <li><a href="cases/welfare-holiday.html">임시공휴일 누락 환급 장애</a></li>
-        <li><a href="cases/welfare-batch-order.html">배치 순서 변경 이중 환급</a></li>
-        <li><a href="cases/kcp-pg-signature.html">KCP PG 전자서명 연동</a></li>
-      </ul></li>
-    <li><a class="side-group" href="#g-linus">라이너스</a>
-      <ul><li><a href="cases/linus-saml-sso.html">Canvas SAML SSO 연동</a></li></ul></li>
-    <li><a class="side-group" href="#g-personal">개인 프로젝트</a>
-      <ul><li><a href="cases/bookmate-refactoring.html">북메이트 리팩토링·운영</a></li></ul></li>
-  </ul>
+        <li><a href="cases/health-settlement.html">건강검진 정산 배치</a></li>
+        <li><a href="cases/welfare-batch-column.html">자동신청 배치 중단</a></li>
+        <li><a href="cases/welfare-holiday.html">임시공휴일 환급 장애</a></li>
+        <li><a href="cases/welfare-batch-order.html">배치 순서 이중 환급</a></li>
+        <li><a href="cases/kcp-pg-signature.html">KCP PG 전자서명</a></li>
+      </ul></details>
+    <details><summary>라이너스</summary>
+      <ul><li><a href="cases/linus-saml-sso.html">Canvas SAML SSO</a></li></ul></details>
+    <details><summary>개인 프로젝트</summary>
+      <ul><li><a href="cases/bookmate-refactoring.html">북메이트 리팩토링</a></li></ul></details>
+  </div>
 </nav>
 
 <div class="wrap">
@@ -92,7 +92,7 @@
   </section>
 
   <section id="cases-sec" aria-labelledby="cases">
-    <h2 id="cases">주요 경험</h2>
+    <h2 id="cases">발자취</h2>
     <div class="groups">
 
       <div class="group" id="g-mildang">
